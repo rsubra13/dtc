@@ -1,50 +1,27 @@
 {% extends "base_template.html" %}
 
 {% block title %}
-    Index
+    Home
 {% endblock %}
 
 {% block content %}
+  <h2> Welcome {{ user }}</h2>
+  <div class="row">
+      <div class="col-xs-6 col-sm-3 well">
+             <p>Profile</p>
+            <img src="http://arizona.uli.org/wp-content/uploads/sites/8/2012/03/CentralArizona_Get-Involved-620x290.jpg" alt="Profile" class="img-thumbnail">
+      </div>
 
- <p class="help-text"> <h2> New User</h2></p>
-  <div class="col-xs-6 col-sm-3 well">
-      <form method="post" action="/user/register/" >
-          <div class="form-horizontal">
-                <label for="username">UserName</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter Username">
-          </div>
-
-          <div class="form-horizontal">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-          </div>
-
-          <div class="form-horizontal">
-            <label for="InputPassword">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-          </div>
-          <div><br></br></div>
-          <div class="form-horizontal">
-             <button type="submit" class="btn btn-success">Submit</button>
-          </div>
-
-  </form>
-
-  </div>
-   <div class=" container-fluid">
    <div class="col-md-8 well">
-    <h2> Search Users</h2>
+    <h2> All Tweets</h2>
       <form method="post" action="/search/" >`
           <div class="form-horizontal">
                 <label for="username">search</label>
                 <input type="text" class="form-control" id="username" placeholder="Enter Username">
           </div> <br>
-
-
           <div class="form-horizontal">
              <button type="submit" class="btn btn-default">Submit</button>
           </div>
-
   </form>
 
 
@@ -92,9 +69,14 @@
   </div>
 </div>
 
+         <!-- Checking images -->
+    <div class="col-xs-6 col-sm-3 well">
+    <h2> Image check</h2>
+    <img src="https://farm9.static.flickr.com/8723/16742931600_5bc4143f49_s.jpg" alt="Yes sample image" class = "img-responsive">
+
+    </div>
 
   </div>
-   </div>  <!--container -->
 </div>
 
 

@@ -1,7 +1,11 @@
 {% load static %}
 
+<!-- jquery try to add it in the down -->
+<script src="//code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
+
 {# Load the tag library #}
 {% load bootstrap3 %}
+
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -10,59 +14,42 @@
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 
-
-<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>{% block title %}DTC - Django Twitter Clone{% endblock %}</title>
 
-    <!-- jquery try to add it in the down -->
-    <script src="//code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+   {% comment %} <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+{% endcomment %}
 </head>
 
 <body>
-<div id="nav sidebar">
-        {% block sidebar %}
-            <nav class="navbar navbar-inverse">
-
-        {% endblock %}
-            </nav>
+    <div id="nav sidebar">
+        <nav class="navbar navbar-inverse">
+        </nav>
     </div>
 
     <div id="content">
         {% block content %}
 
+        {% block bootstrap3_content %}
+            <div class="container">
 
+                {% bootstrap_messages %}
+
+            </div>
+
+        <!-- if you are using the Bootstrap components -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.9.1.min.js' %}"><\/script>')</script>
+        <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+        {% endblock %}
         {% endblock %}
     </div>
-
-{% block bootstrap3_content %}
-    <div class="container">
-
-
-        <p>
-
-
-        </p>
-
-        {% bootstrap_messages %}
-
-        {% endblock %}
-    </div>
-
-<!-- if you are using the Bootstrap components -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.9.1.min.js' %}"><\/script>')</script>
-
-<script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
-
 </body>
 </html>
-s

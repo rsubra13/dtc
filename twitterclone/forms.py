@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 
 class PostForm(forms.ModelForm):
-
     class Meta:
         model = Post
         fields = ('title', 'message', 'photo_id', 'tags')
@@ -13,6 +12,7 @@ class PostForm(forms.ModelForm):
 
 class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput())
 
     class Meta:
         model = User
@@ -24,4 +24,6 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username',
+                  'email',
+                  'password')

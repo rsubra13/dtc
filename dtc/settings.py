@@ -38,13 +38,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'twitterclone',
     'bootstrap3',
-    'rest_framework'
+    'rest_framework',
+    'crispy_forms'
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'dtc.urls'
 
 WSGI_APPLICATION = 'dtc.wsgi.application'
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 APPEND_SLASH = False
@@ -84,6 +85,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+FLICKR_API_KEY = 'debacd731593010176cea9e6cb7f0ca2'
+
+FLICKR_SECRET = '80c6f7cf5798ff8a'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

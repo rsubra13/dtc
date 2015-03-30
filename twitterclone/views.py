@@ -14,14 +14,44 @@ def index(request):
 
 
 def login(request):
-    pass
+    # Add the CSRF Token to the template context
+    #c = {}
+    #c.update(csrf(request))
+
+    form = LoginForm()
+    return render_to_response('login.html',
+                                 {'form': form,
+                                    })
+    #return render_to_response('login.html',
+    #                          'c':c,
+    #                          'form'=form)
 
 
 def auth_view(request):
-    pass
+    """
+    Uses the Django Auth Module to authenticate.
+    """
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
 
-def auth_view(request):
-    pass
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+    # Authenticate the user and password using Django auth module
+    user = auth.authenticate(username=username,
+                             password=password)
+    if user is not None:
+        auth.login(request, user)
+        return HttpResponseRedirect('/user/loggedinUser/')
+    else:
+        return HttpResponseRedirect('/user/invalid_user/')
+
+
+def loggedinUser(request):
+    return render_to_response('loggedinuser_home.html',
+                              {'full_name': request.user.username})
+
+def invalid_user(request):
+     return render_to_response('loginfailed.html')
 
 
 def register(request):
@@ -29,8 +59,8 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(form.cleaned_data['username'],
-                                     form.cleaned_data['email'],
-                                     form.cleaned_data['password'])
+                                            form.cleaned_data['email'],
+                                            form.cleaned_data['password'])
             user.save()
             return HttpResponseRedirect('/user/register_success'
                                         )
@@ -39,7 +69,6 @@ def register(request):
         form = RegistrationForm()
     args = {}
     args.update(csrf(request))
-
     args['form'] = form
     print "comes till here", form
     return render_to_response('register.html', args)
@@ -48,6 +77,6 @@ def register(request):
 def register_success(request):
     message = "Registered Successfully"
     return HttpResponseRedirect('/user/register_success',
-                                        )
+                                )
     # return render_to_response('register.html',
     #                           msg=msg)

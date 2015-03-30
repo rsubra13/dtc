@@ -8,34 +8,25 @@
     {{field.error}}
   {% endfor %}
 
+    <!-- Change this - ise the Django Messages instead -->
     {% if msg%}
-
         <div class="alert alert-success" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Success:</span>
-  Registered Successfully
-</div>
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Success: Registered Successfully</span>
+        </div>
     {% endif %}
 
     <div class="form-inline well col-md-4">
       <h3 class="form-heading">Register <a href="/index" title="Back to homepage">
       <i class="icon icon-home pull-right"></i></a></h3>
-  <div class="form-group">
- <form action="/user/register/" method="post">
-    {% csrf_token %}
-
-    <button type="submit" class="btn btn-primary">
-      {% bootstrap_icon "star" %} Submit
-    </button>
-
-  <input type="submit" class="btn ui-button-icon-primary" value="Register" />
-  </form>
+          <div class="form-group">
+              <form action="/user/register/" method="post"> {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">
+                          {% bootstrap_icon "star" %} Submit
+                        </button>
+                    <input type="submit" class="btn ui-button-icon-primary" value="Register" />
+              </form>
+          </div>
       </div>
-      </div>
-
-
-
-
-
 
 {% endblock %}
