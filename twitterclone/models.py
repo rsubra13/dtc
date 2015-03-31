@@ -24,27 +24,28 @@ class Post(models.Model):
 
 class Photo (models.Model):
 
-    flickrid = models.CharField(max_length=255, blank=True)
+
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255, blank=True)
-    postid = models.ForeignKey(Post)
-    userid = models.ForeignKey(User)
+    post = models.ForeignKey(Post)
+    flickrid = models.CharField(max_length=255, blank=True)
 
     # following fields necessary to construct the Flickr image URLs
     server = models.CharField(max_length=255, blank=True)
     farm = models.CharField(max_length=255, blank=True)
     secret = models.CharField(max_length=255, blank=True)
 
-    def __unicode__ (self):
-        return str(self.flickrid)
+    def __unicode__(self):
+        return str(self.id)
 
-    def image_url(self, code="t"):
-
-        return "https://farm%{farm}.staticflickr.com/%{server}/%{flickrid}s_%{secret}_z.jpg" % {
+    def construct_image_url(self):
+        #return "https://farm%{farm}.staticflickr.com/%{server}/%{flickrid}_%{secret}_z.jpg" %\
+        return "https://farm.staticflickr.comz.jpg" %\
+        {
             'farm': self.farm,
             'server': self.server,
             'secret': self.secret,
-            'id': self.flickrid,
-            'code': code
+            'flickrid': self.post.photo_id
         }
 
 

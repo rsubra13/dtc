@@ -1,5 +1,7 @@
 {% extends "base_template.html" %}
 
+{% load bootstrap3 %}
+
 {% block title %}
     Index
 {% endblock %}
@@ -15,7 +17,7 @@
     {% endif %}
 
       <form method="post" action="/user/register/" >
-
+           {% bootstrap_form form layout='vertical' %}
           {% for field in form %}
            <div class="form-group">
                {{ field.errors }}
@@ -26,6 +28,7 @@
               </div>
           {%endfor%}
           <div><br></br></div>
+
           <div class="form-horizontal">
              <button type="submit" class="btn btn-success">Register</button>
              <a href="/login" class="bg-primary"></a>

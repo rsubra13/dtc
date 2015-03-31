@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     url(r'^user/register/$', v.register),
     url(r'^user/register_success/$', v.register_success),
     url(r'^user/new_message/$', v.new_message),
+    #url(r'^user/posts/$', v.PostView.as_view()),
+    url(r'^user/posts/$', v.listallposts),
 
 )
 

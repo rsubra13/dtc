@@ -1,0 +1,32 @@
+{% extends "base_template.html" %}
+
+{% block title %}Tweets list{% endblock %}
+
+{% block content %}
+<h1>All tweets</h1>
+
+{% for post in posts %}
+    {{ post.title | upper }} <br/>
+         {{ post.message }}
+            {{ post.created_date }}
+            {{ post.photo_id }}
+{% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if posts.has_previous %}
+            <a href="?page={{ posts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+
+</div>
+
+{% endblock %}

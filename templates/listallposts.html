@@ -1,0 +1,26 @@
+{% extends "base_template.html" %}
+
+{% block title %}Tweets list{% endblock %}
+
+{% block content %}
+<h1>All tweets</h1>
+    {{object_list}}
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Message</th>
+        <th>Created Date</th>
+        <th>Flickr ID</th>
+        <th></th>
+    </tr>
+    {% for post in object_list %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.message }}</td>
+            <td>{{ post.created_date }}</td>
+            <td>{{ post.photo_id }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

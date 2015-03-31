@@ -3,9 +3,10 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
 from forms import RegistrationForm, LoginForm, PostForm
-from models import User,Post
-
+from models import User, Post , Photo
+from django.views.generic import CreateView , FormView , ListView
 from django.template import RequestContext
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Index page
 
@@ -100,3 +101,35 @@ def new_message(request):
 
        else:
            print "in else"
+    else:
+        form = PostForm(request.POST)
+        print "comes in else of new message"
+        return render_to_response('newpost.html',
+                            {'form': form}
+                            )
+
+
+
+
+class PostView(ListView):
+    template_name = 'listallposts.html'
+    model = Post
+
+def listallposts(request):
+    #allposts = Post.objects.get(userId=3)
+    allposts = Post.objects.all()
+    #Photo.objects.get()
+
+    paginator = Paginator(allposts,10)
+
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # Provide the default first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # Page out of range, deliver the last page
+        posts = paginator.page(paginator.num_pages)
+    return render_to_response('listposts.html', {"posts": posts})
+
