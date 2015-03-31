@@ -8,13 +8,21 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="form-group col-md-4">
-             <form action="/user/new_message/" method="post">
-            {% csrf_token %}
-            {% bootstrap_form form layout='vertical' %}
-            {% buttons submit='OK' reset='Cancel' layout='inline' %}{% endbuttons %}
-            </form>
+
+<p class="help-text"> <h2> New Tweet</h2></p>
+  <div class="col-xs-6 col-sm-3 well">
+    {% if msg%}
+        <div class="alert alert-success" role="alert">
+        <span class="glyphicon glyphicon-registration-mark" aria-hidden="true">{{ msg }}</span>
         </div>
-    </div>
+    {% endif %}
+
+      <form method="post" action="/user/new_message/" >
+           {% bootstrap_form form layout='vertical' %}
+          {% buttons submit='Tweet' reset='Cancel' layout='inline' %}{% endbuttons %}
+
+      </form>
+
+  </div>
+
 {% endblock %}
