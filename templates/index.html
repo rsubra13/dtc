@@ -18,86 +18,33 @@
 
       <form method="post" action="/user/register/" >
            {% bootstrap_form form layout='vertical' %}
-          {% for field in form %}
-           <div class="form-group">
-               {{ field.errors }}
-               <div class="form-control">
-            {{ field.label }}
-            {{ field }}
-               </div>
-              </div>
-          {%endfor%}
-          <div><br></br></div>
 
+          {% buttons submit='Register' reset='Cancel' layout='inline' %}{% endbuttons %}
           <div class="form-horizontal">
-             <button type="submit" class="btn btn-success">Register</button>
-             <a href="/login" class="bg-primary"></a>
-             <span class="help-block"> Existing User? </span><a href="{% url 'twitterclone.views.login' %}">Click here</a>
+
+             <span class="help-block"> Existing User? <a href="{% url 'twitterclone.views.login' %}">Click here</a></span>
           </div>
 
   </form>
 
   </div>
    <div class=" container-fluid">
-   <div class="col-md-8 well">
-    <h2> Search Users</h2>
+   <div class="col-md-4 col-sm-offset-1 well">
+<h2> Search Users</h2>
       <form method="post" action="/search/" >`
           <div class="form-horizontal">
-                <label for="username">search</label>
+                <label for="username">Search Users</label>
                 <input type="text" class="form-control" id="username" placeholder="Enter Username">
           </div> <br>
 
 
           <div class="form-horizontal">
-             <button type="submit" class="btn btn-default">Submit</button>
+             <button type="submit" class="btn btn-success">Submit</button>
           </div>
 
   </form>
 
 
-<!-- New Tweet Modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tweetmodal" data-whatever="New Tweet">New Tweet</button>
-<div class="modal fade" id="tweetmodal" tabindex="-1" role="dialog" aria-labelledby="tweetmodallabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <div class="modal-header btn-danger">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="exampleModalLabel">New Tweet</h4>
-      </div>
-
-      <div class="modal-body well">
-        <form action="/user/new_message" method="post">
-          <div class="form-group">
-            <label for="title" class="control-label">Title</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="control-label">Message</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-
-            <div class="form-group">
-            <label for="photoid" class="control-label">Flicker Photo ID</label>
-            <input type="text" class="form-control" id="photoid">
-          </div>
-
-            <div class="form-group">
-            <label for="tags" class="control-label">Tags</label>
-            <input type="text" class="form-control" id="tags">
-          </div>
-
-        </form>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send</button>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 
   </div>
