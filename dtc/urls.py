@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^user/invalid/$', v.invalid_user),
     url(r'^user/register/$', v.register),
     url(r'^user/register_success/$', v.register_success),
+    url(r'^user/new_message/$', v.new_message),
 
 )
 

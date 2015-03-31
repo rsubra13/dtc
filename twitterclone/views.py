@@ -3,14 +3,17 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
 from forms import RegistrationForm, LoginForm, PostForm
-from models import User
+from models import User,Post
 
 from django.template import RequestContext
 
 # Index page
 
 def index(request):
-    return render_to_response('index.html')
+    form = RegistrationForm()
+    return render_to_response('index.html',
+                            {'form': form}
+                            )
 
 
 def login(request):
@@ -62,8 +65,14 @@ def register(request):
                                             form.cleaned_data['email'],
                                             form.cleaned_data['password'])
             user.save()
-            return HttpResponseRedirect('/user/register_success'
-                                        )
+            return render_to_response('index.html',
+                            {'form': form,'msg' : "Registered Successfully"}
+                            )
+
+        else:
+            return render_to_response('index.html',
+                            {'form': form}
+            )
 
     else:
         form = RegistrationForm()
@@ -71,12 +80,23 @@ def register(request):
     args.update(csrf(request))
     args['form'] = form
     print "comes till here", form
-    return render_to_response('register.html', args)
+    return render_to_response('index.html', args)
 
 # Succesfully registered
 def register_success(request):
     message = "Registered Successfully"
-    return HttpResponseRedirect('/user/register_success',
-                                )
-    # return render_to_response('register.html',
-    #                           msg=msg)
+    #return HttpResponseRedirect('/user/register_success',
+    #                            )
+    return render_to_response('index.html',
+                              {'msg':message}
+                            )
+
+def new_message(request):
+    if request.method == 'POST':
+       form = PostForm(request.POST)
+       if form.is_valid():
+           print 'yes it comes here' , form
+           Post.objects.create()
+
+       else:
+           print "in else"

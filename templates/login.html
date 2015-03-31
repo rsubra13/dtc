@@ -13,11 +13,11 @@
        <form action="/user/auth/" method="post">{% comment %}{% csrf_token %}{% endcomment %}
 
            {%  for field in form %}
-           <div class="form-horizontal">
+           <div class="form-group">
                {{ field.errors }}
             {{ field.label }}
             {{ field }}
-
+            <div><br><br></div>
             </div>
            {% endfor %}
 
