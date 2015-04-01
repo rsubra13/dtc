@@ -85,6 +85,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Make sure these stay a secret
 FLICKR_API_KEY = u'debacd731593010176cea9e6cb7f0ca2'
 
 FLICKR_SECRET = u'80c6f7cf5798ff8a'

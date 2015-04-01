@@ -12,6 +12,42 @@
             {{ post.photo_id }}
 {% endfor %}
 
+
+    <h1>Tweets</h1>
+ <div class="container-fluid">
+
+ <p>WHy are you not displayed??</p>
+{% for k, v in main_dict.iteritems %}
+   {{ k}}
+
+<img src={{ v.url }} alt="Yes" class = "img-responsive">
+{% endfor %}
+</div>
+    <!--start of accordian -->
+    <div class="row container-fluid">
+    <div class="col-md-7">
+    <div class="panel-group" id="accordion">
+        {% for post in posts %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" id=#{{ post.id }} href=#{{ post.id }}>{{ post.title }}</a>
+                </h4>
+            </div>
+
+            <div id=#{{ post.id }} class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>{{post.message}} </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+    </div> <!-- end of row >>
+    end of accordian
     <div class="pagination">
         <span class="step-links">
         {% if posts.has_previous %}

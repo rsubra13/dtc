@@ -16,7 +16,7 @@
         <span class="glyphicon glyphicon-registration-mark" aria-hidden="true">{{ msg }}</span>
         </div>
     {% endif %}
-
+        <span class="help-block">  <a href="{% url 'twitterclone.views.loggedinUser' %}">Home</a></span>
       <form method="post" action="/user/new_message/" >
            {% bootstrap_form form layout='vertical' %}
           {% buttons submit='Tweet' reset='Cancel' layout='inline' %}{% endbuttons %}
@@ -24,12 +24,11 @@
       </form>
 
   </div>
-    {% if url %}
-     {{ url }}
 
+    {% if url %}
         <!-- Checking images -->
-    <div class="col-xs-6 col-sm-3 well">
-    <h2> Image check</h2>
+    <div class="col-xs-6 col-md-offset-1 col-sm-3 well">
+    <h2> Your Flickr Image:</h2>
     <img src={{ url }} alt="Yes" class = "img-responsive">
 
     </div>

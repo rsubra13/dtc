@@ -10,31 +10,18 @@
       <div class="col-xs-6 col-sm-3 well">
              <p>Profile</p>
             <img src="http://arizona.uli.org/wp-content/uploads/sites/8/2012/03/CentralArizona_Get-Involved-620x290.jpg" alt="Profile" class="img-thumbnail">
+            <span class="help-block">Hiker, Pythonista </span>
       </div>
 
-   <div class="col-md-8 well">
+   <div class="col-md-6 col-sm-offset-1 well">
     <h2> All Tweets</h2>
-      <form method="post" action="/search/" >`
-          <div class="form-horizontal">
-                <label for="username">search</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter Username">
-          </div> <br>
-          <div class="form-horizontal">
-             <button type="submit" class="btn btn-default">Submit</button>
-          </div>
-  </form>
 
 
-<!-- New Tweet Modal -->
-<button type="button" class="btn btn-warning"><a href="{% url 'twitterclone.views.new_message' %}">New Tweet</button>
+        <!-- New Tweet Modal -->
+        <button type="button" class="btn btn-warning"><a href="{% url 'twitterclone.views.new_message' %}">New Tweet</button>
+         <button type="button" class="btn btn-default"><a href="{% url 'twitterclone.views.listallposts' %}">Get latest Tweets</button>
 
 
-         <!-- Checking images -->
-    <div class="col-xs-6 col-sm-3 well">
-    <h2> Image check</h2>
-    <img src="https://farm9.static.flickr.com/8723/16742931600_5bc4143f49_s.jpg" alt="Yes sample image" class = "img-responsive">
-
-    </div>
 
   </div>
 

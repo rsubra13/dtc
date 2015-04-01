@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 import datetime as dt
 
 # Using User class of Django instead of custom User class.
-
-
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200, unique=True)
@@ -20,19 +18,8 @@ class Post(models.Model):
     def post_unittest(self, title):
         return "The title is "+title
 
-    # def __init__(self, photo_id,title=None,message=None,userobj=None, tags=None):
-    #     self.photo_id = photo_id
-    #     self.title = title
-    #     self.message = message
-    #     self.created_date = dt.datetime.today()
-    #     self.userId = userobj
-    #     self.tags = tags
 
-
-
-
-
- # This model class is used to build the Flickr image URL
+# This model class is used to build the Flickr image URL
 
 class Photo (models.Model):
 
@@ -50,6 +37,9 @@ class Photo (models.Model):
 
     def __unicode__(self):
         return str(self.id)
+
+
+
 
 
 

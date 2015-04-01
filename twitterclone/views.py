@@ -14,6 +14,7 @@ import json, urllib2
 import flickrapi # old one
 import flickr_api # new
 from flickr_api.api import flickr, reflection
+from collections import  defaultdict
 
 # Index page
 
@@ -140,7 +141,8 @@ def new_message(request):
                  farm = farm,
                  secret = secret,
                  server = server,
-                 flickrid = flickrid
+                 flickrid = flickrid,
+                 url = url
                  )
 
            ph.save()
@@ -167,21 +169,31 @@ class PostView(ListView):
     model = Post
 
 def listallposts(request):
-    #allposts = Post.objects.get(userId=3)
-    allposts = Post.objects.all()
 
-    #Photo.objects.get()
+    allposts = Post.objects.filter(userId=request.user.id)
+    main_dict = defaultdict(dict)
+    sub_dict = {}
+    for i, each_post in enumerate(allposts):
 
-    paginator = Paginator(allposts, 10)
+        ph = Photo.objects.get(post=each_post)
+        # construct the sub-dict
+        sub_dict['title'] = each_post.title
+        sub_dict['message'] = each_post.message
+        sub_dict['created_date'] = each_post.created_date
+        sub_dict['tags'] = each_post.tags
+        sub_dict['url'] = ph.url
 
-    page = request.GET.get('page')
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        # Provide the default first page
-        posts = paginator.page(1)
-    except EmptyPage:
-        # Page out of range, deliver the last page
-        posts = paginator.page(paginator.num_pages)
-    return render_to_response('listposts.html', {"posts": posts})
+        # construct the main dict
+        main_dict[i].update(sub_dict)
+
+        sub_dict.clear()
+
+    print " main dict", main_dict
+    sample_Dict = {'Alice': '2341', 'Beth': '9102', 'Cecil': '3258'}
+    posts = allposts
+    return render_to_response('listposts.html',
+                              {"posts": posts,
+                              "main_dict": dict(main_dict)}
+                              )
+
 
