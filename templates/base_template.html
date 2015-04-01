@@ -19,18 +19,12 @@
     <meta charset="UTF-8">
     <title>{% block title %}DTC - Django Twitter Clone{% endblock %}</title>
 
-
-   {% comment %} <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-{% endcomment %}
 </head>
 
 <body>
     <div id="nav sidebar">
         <nav class="navbar navbar-inverse">
+            <li class="active"><a href="/logout">Logout</a></li>
         </nav>
     </div>
 
@@ -39,9 +33,7 @@
 
         {% block bootstrap3_content %}
             <div class="container">
-
                 {% bootstrap_messages %}
-
             </div>
 
         <!-- if you are using the Bootstrap components -->

@@ -8,6 +8,12 @@
 
 {% block content %}
 
+    {% if logoutmsg%}
+        <div class="alert alert-success" role="alert">
+        <span class="glyphicon glyphicon-briefcase" aria-hidden="true">{{ logoutmsg }}</span>
+        </div>
+    {% endif %}
+
  <p class="help-text"> <h2> New User</h2></p>
   <div class="col-xs-6 col-sm-3 well">
     {% if msg%}
@@ -44,6 +50,16 @@
 
   </form>
 
+       <form method="post" action="/search/" >
+           {% bootstrap_form form layout='vertical' %}
+
+          {% buttons submit='Register' reset='Cancel' layout='inline' %}{% endbuttons %}
+          <div class="form-horizontal">
+
+             <span class="help-block"> Existing User? <a href="{% url 'twitterclone.views.login' %}">Click here</a></span>
+          </div>
+
+  </form>
 
 
 

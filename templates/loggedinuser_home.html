@@ -8,9 +8,9 @@
   <h2> Welcome {{ full_name }}</h2>
   <div class="row">
       <div class="col-xs-6 col-sm-3 well">
-             <p>Profile</p>
+             <p>Profile: ( Static Picture)</p>
             <img src="http://arizona.uli.org/wp-content/uploads/sites/8/2012/03/CentralArizona_Get-Involved-620x290.jpg" alt="Profile" class="img-thumbnail">
-            <span class="help-block">Hiker, Pythonista </span>
+            <span class="help-block">Hiker, Pythonista , Blah, Blah... ( #JustLikeThat Text) </span>
       </div>
 
    <div class="col-md-6 col-sm-offset-1 well">
@@ -18,7 +18,7 @@
 
 
         <!-- New Tweet Modal -->
-        <button type="button" class="btn btn-warning"><a href="{% url 'twitterclone.views.new_message' %}">New Tweet</button>
+        <button type="button" class="btn btn-info"><a href="{% url 'twitterclone.views.new_message' %}">New Tweet</button>
          <button type="button" class="btn btn-default"><a href="{% url 'twitterclone.views.listallposts' %}">Get latest Tweets</button>
 
 
@@ -27,23 +27,6 @@
 
 
 </div>
-
-<script type="application/javascript">
-
-$(function(){
-    $('#tweetmodal').on('submit', function(e){
-        e.preventDefault();
-        $.ajax({
-            url: "/user/new_message/",
-            type: 'POST',
-            data: $('#tweetmodal').serialize(),
-            success: function(data){
-                 alert('successfully submitted')
-            }
-        });
-    });
-});
-</script>
 
 
 

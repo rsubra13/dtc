@@ -106,6 +106,18 @@ def register_success(request):
     return render_to_response('index.html',
                               {'msg':message}
                             )
+
+
+def logout(request):
+    auth.logout(request)
+    form = RegistrationForm()
+    return render_to_response('index.html',
+        {
+            'logoutmsg' : "Logged out successfully",
+            'form' : form
+        })
+
+
 @login_required
 def new_message(request):
     if request.method == 'POST':
@@ -184,7 +196,7 @@ def listallposts(request):
         sub_dict['url'] = ph.url
 
         # construct the main dict
-        main_dict[i].update(sub_dict)
+        main_dict[i+1].update(sub_dict)
 
         sub_dict.clear()
 
