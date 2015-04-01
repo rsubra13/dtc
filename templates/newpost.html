@@ -24,5 +24,14 @@
       </form>
 
   </div>
+    {% if url %}
+     {{ url }}
 
+        <!-- Checking images -->
+    <div class="col-xs-6 col-sm-3 well">
+    <h2> Image check</h2>
+    <img src={{ url }} alt="Yes" class = "img-responsive">
+
+    </div>
+    {%  endif %}
 {% endblock %}

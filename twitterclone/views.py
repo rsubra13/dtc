@@ -6,9 +6,21 @@ from forms import RegistrationForm, LoginForm, PostForm
 from models import User, Post , Photo
 from django.views.generic import CreateView , FormView , ListView
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import datetime as dt
+from dtc.settings import FLICKR_API_KEY, FLICKR_SECRET, FLICKR_API_SIG , FLICKR_AUTH_TOKEN
+import json, urllib2
+import flickrapi # old one
+import flickr_api # new
+from flickr_api.api import flickr, reflection
 
 # Index page
+
+
+
+
+
 
 def index(request):
     form = RegistrationForm()
@@ -23,6 +35,8 @@ def login(request):
     #c.update(csrf(request))
 
     form = LoginForm()
+    # Set the Flickr keys only once
+    flickr_api.set_keys(api_key = FLICKR_API_KEY, api_secret = FLICKR_SECRET)
     return render_to_response('login.html',
                                  {'form': form,
                                     })
@@ -91,26 +105,63 @@ def register_success(request):
     return render_to_response('index.html',
                               {'msg':message}
                             )
-
+@login_required
 def new_message(request):
     if request.method == 'POST':
        form = PostForm(request.POST)
        if form.is_valid():
-           print 'yes it comes here' , form
-           Post.objects.create()
 
+           # Get the user object instance ( Foreign Key in Post Table)
+           userobj = User.objects.get(id=request.user.id)
+
+           #Add the remaining fields.
+           postobj = form.save(commit=False)
+           postobj.userId = userobj
+           postobj.created_date = dt.datetime.today()
+           postobj.save()
+           flickrid = form.cleaned_data['photo_id']
+           print "flickr id", flickrid
+
+           # Try to get the flickr image url here itself
+
+           flickr_api.set_keys(api_key = FLICKR_API_KEY, api_secret = FLICKR_SECRET) # optimize this
+           flickr_response_json= flickr_api.method_call.call_api(method = "flickr.photos.getInfo", photo_id=flickrid)
+
+           # Get these fields to construct the URL
+           farm = flickr_response_json ['photo'] ['farm']
+           server = flickr_response_json ['photo'] ['server']
+           secret = flickr_response_json ['photo'] ['secret']
+
+
+           # Construct the URL
+           url = "https://farm"+str(farm)+".staticflickr.com/"+str(server)+"/"+str(flickrid)+"_"+str(secret)+"_m.jpg"
+
+           ph = Photo(post= postobj,
+                 farm = farm,
+                 secret = secret,
+                 server = server,
+                 flickrid = flickrid
+                 )
+
+           ph.save()
+
+           return render_to_response('newpost.html',
+                            {'form': form,
+                             'msg' : "Message Posted Successfully",
+                            'url' : url}
+                            )
        else:
-           print "in else"
+            return render_to_response('newpost.html',
+                            {'form': form,
+                             'msg' : "Please check the fields correctly"}
+                            )
     else:
         form = PostForm(request.POST)
         print "comes in else of new message"
         return render_to_response('newpost.html',
                             {'form': form}
                             )
-
-
-
-
+# Just for checking
 class PostView(ListView):
     template_name = 'listallposts.html'
     model = Post
@@ -118,9 +169,10 @@ class PostView(ListView):
 def listallposts(request):
     #allposts = Post.objects.get(userId=3)
     allposts = Post.objects.all()
+
     #Photo.objects.get()
 
-    paginator = Paginator(allposts,10)
+    paginator = Paginator(allposts, 10)
 
     page = request.GET.get('page')
     try:

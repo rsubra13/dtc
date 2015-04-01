@@ -85,9 +85,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-FLICKR_API_KEY = 'debacd731593010176cea9e6cb7f0ca2'
+FLICKR_API_KEY = u'debacd731593010176cea9e6cb7f0ca2'
 
-FLICKR_SECRET = '80c6f7cf5798ff8a'
+FLICKR_SECRET = u'80c6f7cf5798ff8a'
+
+FLICKR_AUTH_TOKEN = u'72157649311216234-ecde7199d11fa819'
+
+FLICKR_API_SIG = u'e238fdcd999a2780773562b15e72c21f'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
