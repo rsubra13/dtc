@@ -96,7 +96,7 @@ $ python manage.py migrate
 ```
 Either run the above command or the commands given in ``CreateDBcommands`` file can be used to create the database manually
 
-d) *Startup script*
+d) *Start the server*
 ```sh
 $ python manage.py runserver
 ```
