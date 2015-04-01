@@ -4,9 +4,10 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from forms import RegistrationForm, LoginForm, PostForm, SearchForm
 from models import User, Post , Photo
-from django.views.generic import CreateView , FormView , ListView
+from django.views.generic import  ListView
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime as dt
 from dtc.settings import FLICKR_API_KEY, FLICKR_SECRET, FLICKR_API_SIG , FLICKR_AUTH_TOKEN
@@ -15,18 +16,44 @@ import flickrapi # old one
 import flickr_api # new
 from flickr_api.api import flickr, reflection
 from collections import  defaultdict
-
+from rest_framework import serializers, parsers
 # Index page
-
-
-
-
-
 
 def index(request):
     form = RegistrationForm()
     searchform = SearchForm()
     return render_to_response('index.html',
+                            {'form': form,
+                             'searchform':searchform}
+                            )
+
+
+
+def search(request, user=None):
+
+    form = RegistrationForm()
+    searchform = SearchForm()
+
+    if request.method == "POST":
+        username = request.POST.get('username', '')
+        print "username" , username
+        if username is not None:
+            try:
+                userobj = User.objects.get(username=username)
+                request.session['search_user_username'] = userobj.username
+                return HttpResponseRedirect('/posts/')
+            except:
+                userobj = None
+                searcherror = " The user doesnot exist. Please try other user."
+                return render_to_response('index.html',
+                            {'form': form,
+                             'searchform':searchform,
+                             'searcherror' : searcherror}
+                            )
+
+
+    else:
+        return render_to_response('index.html',
                             {'form': form,
                              'searchform':searchform}
                             )
@@ -66,7 +93,7 @@ def auth_view(request):
     else:
         return HttpResponseRedirect('/user/invalid_user/')
 
-
+@login_required()
 def loggedinUser(request):
     return render_to_response('loggedinuser_home.html',
                               {'full_name': request.user.username})
@@ -113,10 +140,13 @@ def register_success(request):
 def logout(request):
     auth.logout(request)
     form = RegistrationForm()
+    searchform = SearchForm()
     return render_to_response('index.html',
         {
             'logoutmsg' : "Logged out successfully",
-            'form' : form
+            'form' : form,
+            'searchform':searchform
+
         })
 
 
@@ -182,6 +212,7 @@ class PostView(ListView):
     template_name = 'listallposts.html'
     model = Post
 
+@login_required()
 def listallposts(request):
 
     allposts = Post.objects.filter(userId=request.user.id)
@@ -202,8 +233,6 @@ def listallposts(request):
 
         sub_dict.clear()
 
-    print " main dict", main_dict
-    sample_Dict = {'Alice': '2341', 'Beth': '9102', 'Cecil': '3258'}
     posts = allposts
     return render_to_response('listposts.html',
                               {"posts": posts,
@@ -211,3 +240,37 @@ def listallposts(request):
                               )
 
 
+
+
+# List posts of a user ( search)
+
+def listuserposts(request):
+
+    search_user_name = request.session['search_user_username']
+    print "came here in listuserposts", search_user_name
+
+    userobj = User.objects.get(username=search_user_name)
+    allposts = Post.objects.filter(userId=userobj)
+    main_dict = defaultdict(dict)
+    print "allposts here", allposts
+    sub_dict = {}
+    for i, each_post in enumerate(allposts):
+
+        ph = Photo.objects.get(post=each_post)
+        # construct the sub-dict
+        sub_dict['title'] = each_post.title
+        sub_dict['message'] = each_post.message
+        sub_dict['created_date'] = each_post.created_date
+        sub_dict['tags'] = each_post.tags
+        sub_dict['url'] = ph.url
+
+        # construct the main dict
+        main_dict[i+1].update(sub_dict)
+
+        sub_dict.clear()
+
+
+    return render_to_response('listuserposts.html',
+                              {"user": search_user_name,
+                              "main_dict": dict(main_dict)}
+                              )
