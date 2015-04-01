@@ -17,6 +17,11 @@ import flickr_api # new
 from flickr_api.api import flickr, reflection
 from collections import  defaultdict
 from rest_framework import serializers, parsers
+from django.core.serializers.json import DjangoJSONEncoder
+
+import datetime
+import decimal
+from django.db.models.base import ModelState
 # Index page
 
 def index(request):
@@ -103,20 +108,25 @@ def invalid_user(request):
 
 
 def register(request):
+    searchform = SearchForm(request.POST)
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+
         if form.is_valid():
             user = User.objects.create_user(form.cleaned_data['username'],
                                             form.cleaned_data['email'],
                                             form.cleaned_data['password'])
             user.save()
             return render_to_response('index.html',
-                            {'form': form,'msg' : "Registered Successfully"}
+                            {'form': form,
+                             'searchform': searchform,
+                             'msg' : "Registered Successfully"}
                             )
 
         else:
             return render_to_response('index.html',
-                            {'form': form}
+                            {'form': form,
+                             'searchform':searchform}
             )
 
     else:
@@ -124,6 +134,7 @@ def register(request):
     args = {}
     args.update(csrf(request))
     args['form'] = form
+    args['searchform'] = searchform
     print "comes till here", form
     return render_to_response('index.html', args)
 
@@ -154,6 +165,7 @@ def logout(request):
 def new_message(request):
     if request.method == 'POST':
        form = PostForm(request.POST)
+
        if form.is_valid():
 
            # Get the user object instance ( Foreign Key in Post Table)
@@ -247,12 +259,12 @@ def listallposts(request):
 def listuserposts(request):
 
     search_user_name = request.session['search_user_username']
-    print "came here in listuserposts", search_user_name
+
 
     userobj = User.objects.get(username=search_user_name)
     allposts = Post.objects.filter(userId=userobj)
     main_dict = defaultdict(dict)
-    print "allposts here", allposts
+
     sub_dict = {}
     for i, each_post in enumerate(allposts):
 
@@ -266,11 +278,30 @@ def listuserposts(request):
 
         # construct the main dict
         main_dict[i+1].update(sub_dict)
-
         sub_dict.clear()
+        other_dict = json.dumps(main_dict, cls=DjangoJSONEncoder,sort_keys=True, indent=2)
+        request.session['other_dict'] = other_dict
+        request.session['search_user_name'] = search_user_name
 
 
     return render_to_response('listuserposts.html',
                               {"user": search_user_name,
                               "main_dict": dict(main_dict)}
                               )
+
+def listuserposts_json(request):
+
+    other_dict = request.session['other_dict']
+    user = request.session['search_user_name']
+    print "came here in json", other_dict
+
+    #return HttpResponseRedirect(other_dict, mimetype="application/json")
+    return render_to_response('listuserpostsjson.html',
+                              {
+                              "json_dict": other_dict,
+                               "user": user,
+                              'mimetype':'application/json'}
+
+                              )
+
+
