@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^user/posts/$', v.listallposts),
     url(r'^posts/', v.listuserposts),
     url(r'^posts.json', v.listuserposts_json),
+    url(r'^user/posts.json', v.listuserposts_json),
     url(r'^search/(?P<user>[a-zA-Z])/$', v.search),
     url(r'^search/$', v.search)
 

@@ -12,18 +12,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime as dt
 from dtc.settings import FLICKR_API_KEY, FLICKR_SECRET, FLICKR_API_SIG , FLICKR_AUTH_TOKEN
 import json, urllib2
-import flickrapi # old one
 import flickr_api # new
-from flickr_api.api import flickr, reflection
 from collections import  defaultdict
-from rest_framework import serializers, parsers
 from django.core.serializers.json import DjangoJSONEncoder
+from rest_framework import serializers, parsers
+from flickr_api.api import flickr, reflection
+import flickrapi # old one
 
-import datetime
-import decimal
-from django.db.models.base import ModelState
+
 # Index page
-
 def index(request):
     form = RegistrationForm()
     searchform = SearchForm()
@@ -33,21 +30,20 @@ def index(request):
                             )
 
 
-
+# Function to search the users. ( No login required)
 def search(request, user=None):
-
     form = RegistrationForm()
     searchform = SearchForm()
 
     if request.method == "POST":
         username = request.POST.get('username', '')
-        print "username" , username
+
         if username is not None:
             try:
                 userobj = User.objects.get(username=username)
                 request.session['search_user_username'] = userobj.username
                 return HttpResponseRedirect('/posts/')
-            except:
+            except ObjectDoesNotExist:
                 userobj = None
                 searcherror = " The user doesnot exist. Please try other user."
                 return render_to_response('index.html',
@@ -65,6 +61,7 @@ def search(request, user=None):
 
 
 def login(request):
+
     # Add the CSRF Token to the template context
     #c = {}
     #c.update(csrf(request))
@@ -75,9 +72,6 @@ def login(request):
     return render_to_response('login.html',
                                  {'form': form,
                                     })
-    #return render_to_response('login.html',
-    #                          'c':c,
-    #                          'form'=form)
 
 
 def auth_view(request):
@@ -135,7 +129,6 @@ def register(request):
     args.update(csrf(request))
     args['form'] = form
     args['searchform'] = searchform
-    print "comes till here", form
     return render_to_response('index.html', args)
 
 # Succesfully registered
@@ -161,8 +154,18 @@ def logout(request):
         })
 
 
+# Function to save a new tweet
 @login_required
 def new_message(request):
+    """
+    Flickr URL is constructed here and saved in the DB
+    :param request:
+    :return: None
+    """
+    """
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
        form = PostForm(request.POST)
 
@@ -177,7 +180,7 @@ def new_message(request):
            postobj.created_date = dt.datetime.today()
            postobj.save()
            flickrid = form.cleaned_data['photo_id']
-           print "flickr id", flickrid
+
 
            # Try to get the flickr image url here itself
 
@@ -215,18 +218,20 @@ def new_message(request):
                             )
     else:
         form = PostForm(request.POST)
-        print "comes in else of new message"
+
         return render_to_response('newpost.html',
                             {'form': form}
                             )
-# Just for checking
+
+# Just for checking - not used.
 class PostView(ListView):
     template_name = 'listallposts.html'
     model = Post
 
+
+# Function to show the tweets of only loggedin users
 @login_required()
 def listallposts(request):
-
     allposts = Post.objects.filter(userId=request.user.id)
     main_dict = defaultdict(dict)
     sub_dict = {}
@@ -245,6 +250,11 @@ def listallposts(request):
 
         sub_dict.clear()
 
+    other_dict = json.dumps(main_dict, cls=DjangoJSONEncoder,sort_keys=True, indent=2)
+    request.session['other_dict'] = other_dict
+    request.session['search_user_name'] = request.user.username
+
+    print "request session" , request.session
     posts = allposts
     return render_to_response('listposts.html',
                               {"posts": posts,
@@ -254,13 +264,10 @@ def listallposts(request):
 
 
 
-# List posts of a user ( search)
-
+# Function to show the tweets of queried user
 def listuserposts(request):
 
     search_user_name = request.session['search_user_username']
-
-
     userobj = User.objects.get(username=search_user_name)
     allposts = Post.objects.filter(userId=userobj)
     main_dict = defaultdict(dict)
@@ -288,14 +295,14 @@ def listuserposts(request):
                               {"user": search_user_name,
                               "main_dict": dict(main_dict)}
                               )
-
+# JSON View
 def listuserposts_json(request):
+
 
     other_dict = request.session['other_dict']
     user = request.session['search_user_name']
-    print "came here in json", other_dict
 
-    #return HttpResponseRedirect(other_dict, mimetype="application/json")
+
     return render_to_response('listuserpostsjson.html',
                               {
                               "json_dict": other_dict,
