@@ -88,7 +88,7 @@ $ pip install -r requirements.txt
 ```
 c) *PostGRESQL server*
 
-* Make sure PostGRESQL is installed in your and system and it is running properly. Please create the database and use the POSTGRES connection string as given in ``config.py``
+* Make sure PostGRESQL is installed in your and system and it is running properly. Please create the database and use the POSTGRES connection string as given in ``settings.py``
 
 d) *Create Databases*
 ```sh
