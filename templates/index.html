@@ -36,30 +36,12 @@
   </div>
    <div class=" container-fluid">
    <div class="col-md-4 col-sm-offset-1 well">
-<h2> Search Users</h2>
-      <form method="post" action="/search/" >`
-          <div class="form-horizontal">
-                <label for="username">Search Users</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter Username">
-          </div> <br>
-
-
-          <div class="form-horizontal">
-             <button type="submit" class="btn btn-success">Submit</button>
-          </div>
-
-  </form>
+       <h2> Search Users</h2>
 
        <form method="post" action="/search/" >
-           {% bootstrap_form form layout='vertical' %}
-
-          {% buttons submit='Register' reset='Cancel' layout='inline' %}{% endbuttons %}
-          <div class="form-horizontal">
-
-             <span class="help-block"> Existing User? <a href="{% url 'twitterclone.views.login' %}">Click here</a></span>
-          </div>
-
-  </form>
+           {% bootstrap_form searchform layout='vertical' %}
+          {% buttons submit='Submit' reset='Cancel' layout='inline' %}{% endbuttons %}
+      </form>
 
 
 

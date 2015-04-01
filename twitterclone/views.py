@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
-from forms import RegistrationForm, LoginForm, PostForm
+from forms import RegistrationForm, LoginForm, PostForm, SearchForm
 from models import User, Post , Photo
 from django.views.generic import CreateView , FormView , ListView
 from django.template import RequestContext
@@ -25,8 +25,10 @@ from collections import  defaultdict
 
 def index(request):
     form = RegistrationForm()
+    searchform = SearchForm()
     return render_to_response('index.html',
-                            {'form': form}
+                            {'form': form,
+                             'searchform':searchform}
                             )
 
 

@@ -27,3 +27,7 @@ class RegistrationForm(forms.ModelForm):
         fields = ('username',
                   'email',
                   'password')
+
+
+class SearchForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput())
